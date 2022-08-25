@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.devtools.v102.debugger.Debugger.GetScriptSourceResponse;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
@@ -23,12 +24,13 @@ import resorces.base;
 public class Listeners extends base implements ITestListener{
 	ExtentTest test;
 	ExtentReports extent= ExtentReportNG.getReportObject();
+	ThreadLocal<ExtentTest> extentTest =new ThreadLocal<ExtentTest>();
 	@Override
 	public void onTestStart(ITestResult result) {
 		// TODO Auto-generated method stub
 		ITestListener.super.onTestStart(result);
-		ExtentTest test=extent.createTest("basePageNavigation");
-		
+	 test=extent.createTest(result.getMethod().getMethodName());
+		extentTest.set(test);
 	}
 
 	@Override
@@ -41,22 +43,25 @@ public class Listeners extends base implements ITestListener{
 	@Override
 	public void onTestFailure(ITestResult result) {
 		// TODO Auto-generated method stub
-//		ITestListener.super.onTestFailure(result);
-//		//COAD TO CAPTUES THE SCREEN SHORT
-//		WebDriver driver =null;
-//	String testMethodName =result.getMethod().getMethodName();
-//try {
-//	driver =(WebDriver)result.getTestClass().getRealClass().getDeclaredField("driver").get(result.getInstance());
-//} catch (Exception e) {
-//	// TODO Auto-generated catch block
-//	
-//}
-//	try {
-//		getScreenShortPath(testMethodName, driver);
-//	} catch (IOException e) {
-//		// TODO Auto-generated catch block
-//		e.printStackTrace();
-//	}
+		ITestListener.super.onTestFailure(result);
+		//COAD TO CAPTUES THE SCREEN SHORT'
+		extentTest.get().fail(result.getThrowable());
+		WebDriver driver =null;
+	String testMethodName =result.getMethod().getMethodName();
+try {
+	driver =(WebDriver)result.getTestClass().getRealClass().getDeclaredField("driver").get(result.getInstance());
+} catch (Exception e) {
+	// TODO Auto-generated catch block
+	
+}
+	try {
+		
+		extentTest.get().addScreenCaptureFromPath(getScreenShortPath(testMethodName, driver), result.getMethod().getMethodName());
+		
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 	}
 
 	@Override

@@ -41,11 +41,11 @@ public class Homepage extends base {
 		Landingpage l=new Landingpage(driver);
 		l.getemail().sendKeys(Username);
 		l.getnext().click();
-//		WebElement name=driver.findElement(By.xpath("//input[@id='i0116']"));
-//		
+		WebElement name=driver.findElement(By.xpath("//input[@id='i0116']"));
+		
 //		name.sendKeys("courseName");
 //		File file =name.getScreenshotAs(OutputType.FILE);
-//		FileUtils.copyFile(file, new File("logo1.png"));
+//		FileUtils.copyFile(file, new File("logo.png"));
 //		System.out.println(name.getRect().getDimension().getHeight());
 //		name.getAttribute(Username);
 		
@@ -85,14 +85,14 @@ public class Homepage extends base {
 	public Object[][] getData()
 	{
 		//0th row
-		Object[][] date=new Object[1][2];
-		date[0][0]="bhagyashri.m@systenics.net";
+		Object[][] date=new Object[2][2];
+		date[0][0]="bhagyashri3232.m@systenics.net";
 		date[0][1]="vishal@123";
 		
 		
 	//1st row
-//		date[1][0]="agyashri.m@systenics.net";
-//	date[1][1]="shal@123";
+		date[1][0]="bhagyashri.m@systenics.net";
+	date[1][1]="shal@123";
 //		
 		
 		return date;            
